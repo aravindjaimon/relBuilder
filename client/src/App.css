@@ -1,0 +1,14 @@
+.App {
+  margin-top: 10vh;
+  margin-bottom: 20vh;
+}
+.item {
+  margin-top: 10vh;
+}
+.right {
+  display: flex;
+  justify-content: flex-end;
+}
+.button {
+  margin: 5px;
+}
