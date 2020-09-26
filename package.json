@@ -1,0 +1,8 @@
+{
+  "name": "relationship-builder",
+  "version": "1.0.0",
+  "description": "This is a relationship building application built with PERN stack",
+  "author": "Aravind Jaimon",
+  "license": "MIT",
+  "private": false
+}
