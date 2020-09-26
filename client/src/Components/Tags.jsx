@@ -1,21 +1,21 @@
 import React, { useState } from "react";
-import {
-  Button,
-  Col,
-  Form,
-  FormGroup,
-  Input,
-  Label,
-  Modal,
-  ModalBody,
-  ModalHeader,
-  Row,
-  Table,
-} from "reactstrap";
+import { Button, Col, Form, FormGroup, Input, Row, Table } from "reactstrap";
 
 const Tags = () => {
-  const [modal, setModal] = useState(false);
-  const toggle = () => setModal(!modal);
+  const [tag, setTag] = useState("");
+  const onSubmitName = async () => {
+    try {
+      const body = { tag };
+      const res = await fetch("http://localhost:5000/tag", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      console.log(res);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
   return (
     <div className="item">
       <Row>
@@ -23,21 +23,25 @@ const Tags = () => {
           <h2>List of Tags</h2>
         </Col>
         <Col style={{ margin: "5px" }} className="right">
-          <Button onClick={toggle} className="button" color="success">
-            Add a Tag
-          </Button>
-          <Modal isOpen={modal} toggle={toggle}>
-            <ModalHeader>Enter a New Tag (Relation)</ModalHeader>
-            <ModalBody>
-              <Form>
-                <FormGroup>
-                  <Label>Tag Name</Label>
-                  <Input type="text"></Input>
-                </FormGroup>
-                <Button>Add</Button>
-              </Form>
-            </ModalBody>
-          </Modal>
+          <Form className="d-flex" onSubmit={onSubmitName}>
+            <FormGroup>
+              <Input
+                placeholder="Add New Tag"
+                value={tag}
+                onChange={(e) => setTag(e.target.value)}
+                type="text"
+              ></Input>
+            </FormGroup>
+            <FormGroup>
+              <Button
+                type="submit"
+                style={{ marginLeft: "10px" }}
+                color="success"
+              >
+                Add Tag
+              </Button>
+            </FormGroup>
+          </Form>
         </Col>
       </Row>
       <Table>

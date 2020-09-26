@@ -12,3 +12,6 @@
 .button {
   margin: 5px;
 }
+.submit {
+  height: min-content;
+}
