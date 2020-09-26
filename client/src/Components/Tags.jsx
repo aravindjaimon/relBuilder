@@ -1,21 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Col, Form, FormGroup, Input, Row, Table } from "reactstrap";
+import EditTag from "./EditTag.jsx";
 
 const Tags = () => {
   const [tag, setTag] = useState("");
-  const onSubmitName = async () => {
+  const [data, setData] = useState([]);
+
+  const onSubmitTag = async (e) => {
+    e.preventDefault();
     try {
       const body = { tag };
-      const res = await fetch("http://localhost:5000/tag", {
+      await fetch("http://localhost:5000/tags", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-      console.log(res);
     } catch (error) {
       console.error(error.message);
     }
   };
+
+  const deleteTag = async (id) => {
+    await fetch(`http://localhost:5000/tags/${id}`, {
+      method: "DELETE",
+    });
+  };
+  const getTags = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/tags");
+      const jsonData = await res.json();
+      setData(jsonData);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+  useEffect(() => {
+    getTags();
+  });
   return (
     <div className="item">
       <Row>
@@ -23,9 +44,10 @@ const Tags = () => {
           <h2>List of Tags</h2>
         </Col>
         <Col style={{ margin: "5px" }} className="right">
-          <Form className="d-flex" onSubmit={onSubmitName}>
+          <Form className="d-flex" onSubmit={onSubmitTag}>
             <FormGroup>
               <Input
+                required
                 placeholder="Add New Tag"
                 value={tag}
                 onChange={(e) => setTag(e.target.value)}
@@ -38,7 +60,7 @@ const Tags = () => {
                 style={{ marginLeft: "10px" }}
                 color="success"
               >
-                Add Tag
+                Add a Tag
               </Button>
             </FormGroup>
           </Form>
@@ -48,18 +70,33 @@ const Tags = () => {
         <thead>
           <tr>
             <th>ID</th>
-            <th>Name</th>
+            <th>Tag</th>
             <th>Delete</th>
+            <th>Edit</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>Brother</td>
-            <td>
-              <Button color="danger">Delete</Button>
-            </td>
-          </tr>
+          {data.map((item) => {
+            return (
+              <tr key={item.tag_id}>
+                <td>{item.tag_id}</td>
+                <td>{item.tag_name}</td>
+                <td>
+                  <Button
+                    onClick={() => {
+                      deleteTag(item.tag_id);
+                    }}
+                    color="danger"
+                  >
+                    Delete
+                  </Button>
+                </td>
+                <td>
+                  <EditTag item={item} />
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </Table>
     </div>

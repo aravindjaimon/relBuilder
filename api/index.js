@@ -73,6 +73,69 @@ app.delete("/person/:id", async (req, res) => {
   }
 });
 
+// Add one name
+app.post("/tags", async (req, res) => {
+  try {
+    const { tag } = req.body;
+    const newTag = await pool.query(
+      "INSERT INTO tags (tag_name) VALUES($1) RETURNING *",
+      [tag]
+    );
+    res.json(newTag.rows[0]);
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
+// Get all name
+app.get("/tags", async (req, res) => {
+  try {
+    const allTags = await pool.query("SELECT * FROM tags");
+    res.json(allTags.rows);
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
+// Get a name
+app.get("/tags/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const tag = await pool.query("SELECT * FROM tags WHERE tag_id = $1", [id]);
+    res.json(tag.rows[0]);
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
+// Update Tag
+app.put("/tags/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { tag } = req.body;
+    const updateTag = await pool.query(
+      "UPDATE tags SET tag_name = $1 WHERE tag_id = $2",
+      [tag, id]
+    );
+    res.json(updateTag);
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
+// Remove Tag
+app.delete("/tags/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deleteTag = await pool.query("DELETE FROM tags WHERE tag_id = $1", [
+      id,
+    ]);
+    res.json(deleteTag);
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
 app.listen(5000, () => {
   console.log("Server Started on Port 5000");
 });

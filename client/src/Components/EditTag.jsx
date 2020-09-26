@@ -11,16 +11,16 @@ import {
   Button,
 } from "reactstrap";
 
-const EditPerson = ({ item }) => {
-  const [person, setPerson] = useState(item.person_name);
+const EditTag = ({ item }) => {
+  const [tag, setTag] = useState(item.tag_name);
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
 
-  const updatePerson = async (e) => {
+  const updateTag = async (e) => {
     e.preventDefault();
     try {
-      const body = { name: person };
-      await fetch(`http://localhost:5000/person/${item.person_id}`, {
+      const body = { tag };
+      await fetch(`http://localhost:5000/tags/${item.tag_id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -41,14 +41,14 @@ const EditPerson = ({ item }) => {
         Edit
       </Button>
       <Modal isOpen={modal} toggle={toggle}>
-        <ModalHeader toggle={toggle}>Edit Person</ModalHeader>
-        <Form onSubmit={updatePerson}>
+        <ModalHeader toggle={toggle}>Edit Tag</ModalHeader>
+        <Form onSubmit={updateTag}>
           <ModalBody>
             <FormGroup>
               <Label>Enter New Name</Label>
               <Input
-                value={person}
-                onChange={(e) => setPerson(e.target.value)}
+                value={tag}
+                onChange={(e) => setTag(e.target.value)}
                 type="text"
                 name="name"
               ></Input>
@@ -68,4 +68,4 @@ const EditPerson = ({ item }) => {
   );
 };
 
-export default EditPerson;
+export default EditTag;
