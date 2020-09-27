@@ -26,7 +26,7 @@ const Relationship = () => {
   const [data, setData] = useState([]);
 
   const deleteRelation = async (id) => {
-    await fetch(`http://localhost:5000/relations/${id}`, {
+    await fetch(`${process.env.REACT_APP_API_URL}/relations/${id}`, {
       method: "DELETE",
     });
     setUpdate(update + 1);
@@ -62,7 +62,7 @@ const Relationship = () => {
 
   const getPeople = async () => {
     try {
-      const res = await fetch("http://localhost:5000/person");
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/person`);
       const jsonData = await res.json();
       setPeople(jsonData);
     } catch (error) {
@@ -72,7 +72,7 @@ const Relationship = () => {
 
   const getTag = async () => {
     try {
-      const res = await fetch("http://localhost:5000/tags");
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/tags`);
       const jsonData = await res.json();
       setTag(jsonData);
     } catch (error) {
@@ -82,7 +82,7 @@ const Relationship = () => {
 
   const getRelation = async () => {
     try {
-      const res = await fetch("http://localhost:5000/relations");
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/relations`);
       const jsonData = await res.json();
       setRelations(jsonData);
     } catch (error) {
@@ -94,7 +94,7 @@ const Relationship = () => {
     e.preventDefault();
     try {
       const body = { person1: fid, tag: tagid, person2: sid };
-      await fetch("http://localhost:5000/relations", {
+      await fetch(`${process.env.REACT_APP_API_URL}/relations`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),

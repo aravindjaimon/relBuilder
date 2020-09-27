@@ -20,7 +20,7 @@ const EditTag = ({ item, update }) => {
     e.preventDefault();
     try {
       const body = { tag };
-      await fetch(`http://localhost:5000/tags/${item.tag_id}`, {
+      await fetch(`${process.env.REACT_APP_API_URL}/tags/${item.tag_id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),

@@ -11,7 +11,7 @@ const ListPeople = () => {
     e.preventDefault();
     try {
       const body = { name };
-      await fetch("http://localhost:5000/person", {
+      await fetch(`${process.env.REACT_APP_API_URL}/person`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -23,14 +23,14 @@ const ListPeople = () => {
   };
 
   const deletePerson = async (id) => {
-    await fetch(`http://localhost:5000/person/${id}`, {
+    await fetch(`${process.env.REACT_APP_API_URL}/person/${id}`, {
       method: "DELETE",
     });
     setUpdate(update + 1);
   };
   const getPeople = async () => {
     try {
-      const res = await fetch("http://localhost:5000/person");
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/person`);
       const jsonData = await res.json();
       setData(jsonData);
     } catch (error) {

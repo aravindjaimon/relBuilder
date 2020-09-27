@@ -11,7 +11,7 @@ const Tags = () => {
     e.preventDefault();
     try {
       const body = { tag };
-      await fetch("http://localhost:5000/tags", {
+      await fetch(`${process.env.REACT_APP_API_URL}/tags`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -23,14 +23,14 @@ const Tags = () => {
   };
 
   const deleteTag = async (id) => {
-    await fetch(`http://localhost:5000/tags/${id}`, {
+    await fetch(`${process.env.REACT_APP_API_URL}/tags/${id}`, {
       method: "DELETE",
     });
     setUpdate(update + 1);
   };
   const getTags = async () => {
     try {
-      const res = await fetch("http://localhost:5000/tags");
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/tags`);
       const jsonData = await res.json();
       setData(jsonData);
     } catch (error) {

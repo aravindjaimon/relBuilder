@@ -20,7 +20,7 @@ const EditPerson = ({ item, update }) => {
     e.preventDefault();
     try {
       const body = { name: person };
-      await fetch(`http://localhost:5000/person/${item.person_id}`, {
+      await fetch(`${process.env.REACT_APP_API_URL}/person/${item.person_id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
