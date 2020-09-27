@@ -12,6 +12,7 @@ import {
   Row,
   Table,
 } from "reactstrap";
+import FindRelation from "./FindRelation";
 
 const Relationship = () => {
   const [modal, setModal] = useState(false);
@@ -115,111 +116,113 @@ const Relationship = () => {
   }, [people, tag, relations]);
 
   return (
-    <div className="item">
-      <Row>
-        <Col>
-          <h2>List of Relationship</h2>
-        </Col>
-        <Col style={{ margin: "5px" }} className="right">
-          <Button onClick={toggle} className="button" color="success">
-            Add a Relationship
-          </Button>
-          <Modal isOpen={modal} toggle={toggle}>
-            <ModalHeader>Add a Relation</ModalHeader>
-            <ModalBody>
-              <Form onSubmit={onSubmitCreate}>
-                <FormGroup>
-                  <Label>Select First Person</Label>
-                  <Input
-                    value={fid}
-                    onChange={(e) => setFid(e.target.value)}
-                    name="fperson"
-                    type="select"
-                  >
-                    <option value="null">Choose One</option>
-                    {people.map((item) => (
-                      <option value={item.person_id} key={item.person_id}>
-                        {item.person_name}
-                      </option>
-                    ))}
-                  </Input>
-                </FormGroup>
-                <FormGroup>
-                  <Label>Select a Tag</Label>
-                  <Input
-                    value={tagid}
-                    onChange={(e) => setTagid(e.target.value)}
-                    name="tag"
-                    type="select"
-                  >
-                    <option value="null">Choose One</option>
-                    {tag.map((item) => (
-                      <option value={item.tag_id} id={`${item.tag_id}tag`}>
-                        {item.tag_name}
-                      </option>
-                    ))}
-                  </Input>
-                </FormGroup>
-                <FormGroup>
-                  <Label>Select Second Person</Label>
-                  <Input
-                    value={sid}
-                    onChange={(e) => setSid(e.target.value)}
-                    name="sperson"
-                    type="select"
-                  >
-                    <option value="null">Choose One</option>
-                    {people.map((item) => (
-                      <option
-                        value={item.person_id}
-                        id={`${item.person_id}people`}
-                      >
-                        {item.person_name}
-                      </option>
-                    ))}
-                  </Input>
-                </FormGroup>
-                <Button type="submit">Add</Button>
-              </Form>
-            </ModalBody>
-          </Modal>
-        </Col>
-      </Row>
-      <Table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>First Person</th>
-            <th>Relation</th>
-            <th>Second Person</th>
-            <th>Delete</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((item) => {
-            return (
-              <tr id={item.id}>
-                <td>{item.id}</td>
-                <td>{item.fname}</td>
-                <td>{item.tag}</td>
-                <td>{item.sname}</td>
-                <td>
-                  <Button
-                    onClick={() => {
-                      deleteRelation(item.id);
-                    }}
-                    color="danger"
-                  >
-                    Delete
-                  </Button>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </Table>
-    </div>
+    <>
+      <div className="item">
+        <Row>
+          <Col>
+            <h2>List of Relationship</h2>
+          </Col>
+          <Col style={{ margin: "5px" }} className="right">
+            <Button onClick={toggle} className="button" color="success">
+              Add a Relationship
+            </Button>
+            <Modal isOpen={modal} toggle={toggle}>
+              <ModalHeader>Add a Relation</ModalHeader>
+              <ModalBody>
+                <Form onSubmit={onSubmitCreate}>
+                  <FormGroup>
+                    <Label>Select First Person</Label>
+                    <Input
+                      value={fid}
+                      onChange={(e) => setFid(e.target.value)}
+                      name="fperson"
+                      type="select"
+                    >
+                      <option value="null">Choose One</option>
+                      {people.map((item) => (
+                        <option value={item.person_id} key={item.person_id}>
+                          {item.person_name}
+                        </option>
+                      ))}
+                    </Input>
+                  </FormGroup>
+                  <FormGroup>
+                    <Label>Select a Tag</Label>
+                    <Input
+                      value={tagid}
+                      onChange={(e) => setTagid(e.target.value)}
+                      name="tag"
+                      type="select"
+                    >
+                      <option value="null">Choose One</option>
+                      {tag.map((item) => (
+                        <option value={item.tag_id} id={`${item.tag_id}tag`}>
+                          {item.tag_name}
+                        </option>
+                      ))}
+                    </Input>
+                  </FormGroup>
+                  <FormGroup>
+                    <Label>Select Second Person</Label>
+                    <Input
+                      value={sid}
+                      onChange={(e) => setSid(e.target.value)}
+                      name="sperson"
+                      type="select"
+                    >
+                      <option value="null">Choose One</option>
+                      {people.map((item) => (
+                        <option
+                          value={item.person_id}
+                          id={`${item.person_id}people`}
+                        >
+                          {item.person_name}
+                        </option>
+                      ))}
+                    </Input>
+                  </FormGroup>
+                  <Button type="submit">Add</Button>
+                </Form>
+              </ModalBody>
+            </Modal>
+          </Col>
+        </Row>
+        <Table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>First Person</th>
+              <th>Relation</th>
+              <th>Second Person</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.map((item) => {
+              return (
+                <tr id={item.id}>
+                  <td>{item.id}</td>
+                  <td>{item.fname}</td>
+                  <td>{item.tag}</td>
+                  <td>{item.sname}</td>
+                  <td>
+                    <Button
+                      onClick={() => {
+                        deleteRelation(item.id);
+                      }}
+                      color="danger"
+                    >
+                      Delete
+                    </Button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </Table>
+      </div>
+      <FindRelation data={data} />
+    </>
   );
 };
-
 export default Relationship;
