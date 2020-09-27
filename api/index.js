@@ -73,7 +73,74 @@ app.delete("/person/:id", async (req, res) => {
   }
 });
 
-// Add one name
+// Add one Relation
+app.post("/relations", async (req, res) => {
+  try {
+    const { person1, tag, person2 } = req.body;
+    const newRel = await pool.query(
+      "INSERT INTO relation (first_person_id,tag_id,second_person_id) VALUES($1,$2,$3) RETURNING *",
+      [person1, tag, person2]
+    );
+    res.json(newRel.rows[0]);
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
+// Get all Relations
+app.get("/relations", async (req, res) => {
+  try {
+    const allRel = await pool.query("SELECT * FROM relation");
+    res.json(allRel.rows);
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
+// Get a Tag
+app.get("/relations/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const Rel = await pool.query(
+      "SELECT * FROM relation WHERE relation_id = $1",
+      [id]
+    );
+    res.json(Rel.rows[0]);
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
+// Update a Relation
+app.put("/relations/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { person1, tag, person2 } = req.body;
+
+    const updateTag = await pool.query(
+      "UPDATE relation SET first_person_id = $1,tag_id = $2, second_person_id = $3 WHERE relation_id=$4",
+      [person1, tag, person2, id]
+    );
+    res.json(updateTag);
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
+// Remove a Relation
+app.delete("/relations/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deleteTag = await pool.query(
+      "DELETE FROM relation WHERE relation_id = $1",
+      [id]
+    );
+    res.json(deleteTag);
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+// Add one Tag
 app.post("/tags", async (req, res) => {
   try {
     const { tag } = req.body;
@@ -87,7 +154,7 @@ app.post("/tags", async (req, res) => {
   }
 });
 
-// Get all name
+// Get all Tags
 app.get("/tags", async (req, res) => {
   try {
     const allTags = await pool.query("SELECT * FROM tags");
@@ -97,7 +164,7 @@ app.get("/tags", async (req, res) => {
   }
 });
 
-// Get a name
+// Get a Tag
 app.get("/tags/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -108,7 +175,7 @@ app.get("/tags/:id", async (req, res) => {
   }
 });
 
-// Update Tag
+// Update a Tag
 app.put("/tags/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -123,7 +190,7 @@ app.put("/tags/:id", async (req, res) => {
   }
 });
 
-// Remove Tag
+// Remove a Tag
 app.delete("/tags/:id", async (req, res) => {
   try {
     const { id } = req.params;

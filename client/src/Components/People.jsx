@@ -33,7 +33,6 @@ const ListPeople = () => {
       const res = await fetch("http://localhost:5000/person");
       const jsonData = await res.json();
       setData(jsonData);
-      return jsonData;
     } catch (error) {
       console.error(error.message);
     }

@@ -18,10 +18,47 @@ const Relationship = () => {
   const [people, setPeople] = useState([]);
   const [tag, setTag] = useState([]);
   var [update, setUpdate] = useState(0);
-  const toggle = () => {
-    setModal(!modal);
+  const [fid, setFid] = useState("");
+  const [tagid, setTagid] = useState("");
+  const [sid, setSid] = useState("");
+  const [relations, setRelations] = useState([]);
+  const [data, setData] = useState([]);
+
+  const deleteRelation = async (id) => {
+    await fetch(`http://localhost:5000/relations/${id}`, {
+      method: "DELETE",
+    });
     setUpdate(update + 1);
   };
+
+  const getFullData = (people, tag, relation) => {
+    var relationData = [];
+    relation.forEach((element) => {
+      var item = {};
+      people.forEach((person) => {
+        if (element.first_person_id === person.person_id) {
+          item.fname = person.person_name;
+          item.id = element.relation_id;
+        }
+        if (element.second_person_id === person.person_id) {
+          item.sname = person.person_name;
+        }
+      });
+      tag.forEach((rel) => {
+        if (element.tag_id === rel.tag_id) {
+          item.tag = rel.tag_name;
+        }
+      });
+      if (item.fname !== undefined) relationData.push(item);
+    });
+    setData(relationData);
+  };
+
+  const toggle = () => {
+    setUpdate(update + 1);
+    setModal(!modal);
+  };
+
   const getPeople = async () => {
     try {
       const res = await fetch("http://localhost:5000/person");
@@ -31,6 +68,7 @@ const Relationship = () => {
       console.error(error.message);
     }
   };
+
   const getTag = async () => {
     try {
       const res = await fetch("http://localhost:5000/tags");
@@ -40,11 +78,41 @@ const Relationship = () => {
       console.error(error.message);
     }
   };
+
+  const getRelation = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/relations");
+      const jsonData = await res.json();
+      setRelations(jsonData);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  const onSubmitCreate = async (e) => {
+    e.preventDefault();
+    try {
+      const body = { person1: fid, tag: tagid, person2: sid };
+      await fetch("http://localhost:5000/relations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      toggle();
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
   useEffect(() => {
-    console.log("yes");
     getPeople();
     getTag();
+    getRelation();
   }, [update]);
+
+  useEffect(() => {
+    getFullData(people, tag, relations);
+  }, [people, tag, relations]);
 
   return (
     <div className="item">
@@ -59,10 +127,47 @@ const Relationship = () => {
           <Modal isOpen={modal} toggle={toggle}>
             <ModalHeader>Add a Relation</ModalHeader>
             <ModalBody>
-              <Form>
+              <Form onSubmit={onSubmitCreate}>
                 <FormGroup>
                   <Label>Select First Person</Label>
-                  <Input type="select">
+                  <Input
+                    value={fid}
+                    onChange={(e) => setFid(e.target.value)}
+                    name="fperson"
+                    type="select"
+                  >
+                    <option value="null">Choose One</option>
+                    {people.map((item) => (
+                      <option value={item.person_id} key={item.person_id}>
+                        {item.person_name}
+                      </option>
+                    ))}
+                  </Input>
+                </FormGroup>
+                <FormGroup>
+                  <Label>Select a Tag</Label>
+                  <Input
+                    value={tagid}
+                    onChange={(e) => setTagid(e.target.value)}
+                    name="tag"
+                    type="select"
+                  >
+                    <option value="null">Choose One</option>
+                    {tag.map((item) => (
+                      <option value={item.tag_id} id={`${item.tag_id}tag`}>
+                        {item.tag_name}
+                      </option>
+                    ))}
+                  </Input>
+                </FormGroup>
+                <FormGroup>
+                  <Label>Select Second Person</Label>
+                  <Input
+                    value={sid}
+                    onChange={(e) => setSid(e.target.value)}
+                    name="sperson"
+                    type="select"
+                  >
                     <option value="null">Choose One</option>
                     {people.map((item) => (
                       <option
@@ -74,22 +179,7 @@ const Relationship = () => {
                     ))}
                   </Input>
                 </FormGroup>
-                <FormGroup>
-                  <Label>Select a Tag</Label>
-                  <Input type="select">
-                    <option value="null">Choose One</option>
-                    {tag.map((item) => (
-                      <option value={item.tag_id} id={`${item.tag_id}tag`}>
-                        {item.tag_name}
-                      </option>
-                    ))}
-                  </Input>
-                </FormGroup>
-                <FormGroup>
-                  <Label>Select Second Person</Label>
-                  <Input type="select"></Input>
-                </FormGroup>
-                <Button>Add</Button>
+                <Button type="submit">Add</Button>
               </Form>
             </ModalBody>
           </Modal>
@@ -106,15 +196,26 @@ const Relationship = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>Aravind Jaimon</td>
-            <td>Brother</td>
-            <td>Ashwin Jaimon</td>
-            <td>
-              <Button color="danger">Delete</Button>
-            </td>
-          </tr>
+          {data.map((item) => {
+            return (
+              <tr id={item.id}>
+                <td>{item.id}</td>
+                <td>{item.fname}</td>
+                <td>{item.tag}</td>
+                <td>{item.sname}</td>
+                <td>
+                  <Button
+                    onClick={() => {
+                      deleteRelation(item.id);
+                    }}
+                    color="danger"
+                  >
+                    Delete
+                  </Button>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </Table>
     </div>
