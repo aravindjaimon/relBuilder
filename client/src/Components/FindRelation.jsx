@@ -22,9 +22,6 @@ const FindRelation = ({ data }) => {
         }
       }
     });
-    if (output === "") {
-      setOutput("No Relation");
-    }
   };
   return (
     <div className="item">
