@@ -10,6 +10,6 @@
   },
   "scripts": {
     "start": "concurrently \"cd client && yarn start\" \"cd api && yarn start\"",
-    "install": "concurrently \"cd client && yarn \" \"cd api && yarn \""
+    "install:all": "concurrently \"cd client && yarn \" \"cd api && yarn \""
   }
 }
