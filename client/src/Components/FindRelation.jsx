@@ -4,7 +4,7 @@ import { Button, Col, Form, FormGroup, Input, Label, Row } from "reactstrap";
 const FindRelation = ({ data }) => {
   const [fname, setFname] = useState("");
   const [sname, setSname] = useState("");
-  const [output, setOutput] = useState();
+  const [output, setOutput] = useState("");
   const processData = (e) => {
     e.preventDefault();
     data.forEach((element) => {
@@ -22,6 +22,9 @@ const FindRelation = ({ data }) => {
         }
       }
     });
+    if (output === "") {
+      setOutput("No Relation");
+    }
   };
   return (
     <div className="item">
