@@ -5,6 +5,7 @@ import EditTag from "./EditTag.jsx";
 const Tags = () => {
   const [tag, setTag] = useState("");
   const [data, setData] = useState([]);
+  var [update, setUpdate] = useState(0);
 
   const onSubmitTag = async (e) => {
     e.preventDefault();
@@ -15,6 +16,7 @@ const Tags = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
+      setUpdate(update + 1);
     } catch (error) {
       console.error(error.message);
     }
@@ -24,6 +26,7 @@ const Tags = () => {
     await fetch(`http://localhost:5000/tags/${id}`, {
       method: "DELETE",
     });
+    setUpdate(update + 1);
   };
   const getTags = async () => {
     try {
@@ -36,7 +39,7 @@ const Tags = () => {
   };
   useEffect(() => {
     getTags();
-  });
+  }, [update]);
   return (
     <div className="item">
       <Row>
@@ -92,7 +95,12 @@ const Tags = () => {
                   </Button>
                 </td>
                 <td>
-                  <EditTag item={item} />
+                  <EditTag
+                    update={() => {
+                      setUpdate(update + 1);
+                    }}
+                    item={item}
+                  />
                 </td>
               </tr>
             );

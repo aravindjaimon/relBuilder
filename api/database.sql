@@ -12,3 +12,10 @@ CREATE TABLE tags
     tag_id SERIAL PRIMARY KEY,
     tag_name VARCHAR(50)
 );
+CREATE TABLE relation
+(
+    relation_id SERIAL PRIMARY KEY,
+    first_person_id INTEGER,
+    tag_id INTEGER,
+    second_person_id INTEGER
+);

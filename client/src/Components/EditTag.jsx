@@ -11,7 +11,7 @@ import {
   Button,
 } from "reactstrap";
 
-const EditTag = ({ item }) => {
+const EditTag = ({ item, update }) => {
   const [tag, setTag] = useState(item.tag_name);
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
@@ -25,6 +25,7 @@ const EditTag = ({ item }) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
+      update();
     } catch (error) {
       console.error(error.message);
     }

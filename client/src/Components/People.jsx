@@ -5,6 +5,7 @@ import EditPerson from "./EditPerson.jsx";
 const ListPeople = () => {
   const [name, setName] = useState("");
   const [data, setData] = useState([]);
+  var [update, setUpdate] = useState(0);
 
   const onSubmitName = async (e) => {
     e.preventDefault();
@@ -15,6 +16,7 @@ const ListPeople = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
+      setUpdate(update + 1);
     } catch (error) {
       console.error(error.message);
     }
@@ -24,19 +26,21 @@ const ListPeople = () => {
     await fetch(`http://localhost:5000/person/${id}`, {
       method: "DELETE",
     });
+    setUpdate(update + 1);
   };
   const getPeople = async () => {
     try {
       const res = await fetch("http://localhost:5000/person");
       const jsonData = await res.json();
       setData(jsonData);
+      return jsonData;
     } catch (error) {
       console.error(error.message);
     }
   };
   useEffect(() => {
     getPeople();
-  });
+  }, [update]);
   return (
     <div className="item">
       <Row>
@@ -92,7 +96,10 @@ const ListPeople = () => {
                   </Button>
                 </td>
                 <td>
-                  <EditPerson item={item} />
+                  <EditPerson
+                    update={() => setUpdate(update + 1)}
+                    item={item}
+                  />
                 </td>
               </tr>
             );

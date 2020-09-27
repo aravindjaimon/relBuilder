@@ -11,7 +11,7 @@ import {
   Button,
 } from "reactstrap";
 
-const EditPerson = ({ item }) => {
+const EditPerson = ({ item, update }) => {
   const [person, setPerson] = useState(item.person_name);
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
@@ -25,6 +25,7 @@ const EditPerson = ({ item }) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
+      update();
     } catch (error) {
       console.error(error.message);
     }

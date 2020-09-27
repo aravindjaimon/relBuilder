@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Col,
@@ -15,7 +15,37 @@ import {
 
 const Relationship = () => {
   const [modal, setModal] = useState(false);
-  const toggle = () => setModal(!modal);
+  const [people, setPeople] = useState([]);
+  const [tag, setTag] = useState([]);
+  var [update, setUpdate] = useState(0);
+  const toggle = () => {
+    setModal(!modal);
+    setUpdate(update + 1);
+  };
+  const getPeople = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/person");
+      const jsonData = await res.json();
+      setPeople(jsonData);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+  const getTag = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/tags");
+      const jsonData = await res.json();
+      setTag(jsonData);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+  useEffect(() => {
+    console.log("yes");
+    getPeople();
+    getTag();
+  }, [update]);
+
   return (
     <div className="item">
       <Row>
@@ -32,11 +62,28 @@ const Relationship = () => {
               <Form>
                 <FormGroup>
                   <Label>Select First Person</Label>
-                  <Input type="select"></Input>
+                  <Input type="select">
+                    <option value="null">Choose One</option>
+                    {people.map((item) => (
+                      <option
+                        value={item.person_id}
+                        id={`${item.person_id}people`}
+                      >
+                        {item.person_name}
+                      </option>
+                    ))}
+                  </Input>
                 </FormGroup>
                 <FormGroup>
                   <Label>Select a Tag</Label>
-                  <Input type="select"></Input>
+                  <Input type="select">
+                    <option value="null">Choose One</option>
+                    {tag.map((item) => (
+                      <option value={item.tag_id} id={`${item.tag_id}tag`}>
+                        {item.tag_name}
+                      </option>
+                    ))}
+                  </Input>
                 </FormGroup>
                 <FormGroup>
                   <Label>Select Second Person</Label>

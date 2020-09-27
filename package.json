@@ -4,5 +4,12 @@
   "description": "This is a relationship building application built with PERN stack",
   "author": "Aravind Jaimon",
   "license": "MIT",
-  "private": false
+  "private": false,
+  "dependencies": {
+    "concurrently": "^5.3.0"
+  },
+  "scripts": {
+    "start": "concurrently \"cd client && yarn start\" \"cd api && yarn start\"",
+    "install": "concurrently \"cd client && yarn \" \"cd api && yarn \""
+  }
 }
