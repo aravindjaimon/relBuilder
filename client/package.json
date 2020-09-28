@@ -1,6 +1,7 @@
 {
   "name": "client",
   "version": "0.1.0",
+  "homepage": ".",
   "author": "Aravind Jaimon",
   "private": true,
   "dependencies": {

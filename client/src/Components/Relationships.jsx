@@ -221,7 +221,7 @@ const Relationship = () => {
           </tbody>
         </Table>
       </div>
-      <FindRelation data={data} />
+      <FindRelation fullData={data} />
     </>
   );
 };
