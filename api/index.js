@@ -204,7 +204,7 @@ app.delete(`${process.env.API_DIR}/tags/:id`, async (req, res) => {
   }
 });
 
-app.get("/", (req, res) => {
+app.get(`${process.env.API_DIR}/`, (req, res) => {
   res.send("<center><span>Relationship Builder API Listening</span></center>");
 });
 
