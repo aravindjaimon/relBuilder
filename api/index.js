@@ -2,12 +2,13 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const pool = require("./db");
+require("dotenv").config();
 
 app.use(cors());
 app.use(express.json());
 
 // Add one name
-app.post("/person", async (req, res) => {
+app.post(`${process.env.API_DIR}/person`, async (req, res) => {
   try {
     const { name } = req.body;
     const newName = await pool.query(
@@ -21,7 +22,7 @@ app.post("/person", async (req, res) => {
 });
 
 // Get all name
-app.get("/person", async (req, res) => {
+app.get(`${process.env.API_DIR}/person`, async (req, res) => {
   try {
     const allPeople = await pool.query("SELECT * FROM people");
     res.json(allPeople.rows);
@@ -31,7 +32,7 @@ app.get("/person", async (req, res) => {
 });
 
 // Get a name
-app.get("/person/:id", async (req, res) => {
+app.get(`${process.env.API_DIR}/person/:id`, async (req, res) => {
   try {
     const { id } = req.params;
     const person = await pool.query(
@@ -45,7 +46,7 @@ app.get("/person/:id", async (req, res) => {
 });
 
 // Update name
-app.put("/person/:id", async (req, res) => {
+app.put(`${process.env.API_DIR}/person/:id`, async (req, res) => {
   try {
     const { id } = req.params;
     const { name } = req.body;
@@ -60,7 +61,7 @@ app.put("/person/:id", async (req, res) => {
 });
 
 // Remove Name
-app.delete("/person/:id", async (req, res) => {
+app.delete(`${process.env.API_DIR}/person/:id`, async (req, res) => {
   try {
     const { id } = req.params;
     const deleteName = await pool.query(
@@ -74,7 +75,7 @@ app.delete("/person/:id", async (req, res) => {
 });
 
 // Add one Relation
-app.post("/relations", async (req, res) => {
+app.post(`${process.env.API_DIR}/relations`, async (req, res) => {
   try {
     const { person1, tag, person2 } = req.body;
     const newRel = await pool.query(
@@ -88,7 +89,7 @@ app.post("/relations", async (req, res) => {
 });
 
 // Get all Relations
-app.get("/relations", async (req, res) => {
+app.get(`${process.env.API_DIR}/relations`, async (req, res) => {
   try {
     const allRel = await pool.query("SELECT * FROM relation");
     res.json(allRel.rows);
@@ -97,8 +98,8 @@ app.get("/relations", async (req, res) => {
   }
 });
 
-// Get a Tag
-app.get("/relations/:id", async (req, res) => {
+// Get a Relation
+app.get(`${process.env.API_DIR}/relations/:id`, async (req, res) => {
   try {
     const { id } = req.params;
     const Rel = await pool.query(
@@ -112,7 +113,7 @@ app.get("/relations/:id", async (req, res) => {
 });
 
 // Update a Relation
-app.put("/relations/:id", async (req, res) => {
+app.put(`${process.env.API_DIR}/relations/:id`, async (req, res) => {
   try {
     const { id } = req.params;
     const { person1, tag, person2 } = req.body;
@@ -128,7 +129,7 @@ app.put("/relations/:id", async (req, res) => {
 });
 
 // Remove a Relation
-app.delete("/relations/:id", async (req, res) => {
+app.delete(`${process.env.API_DIR}/relations/:id`, async (req, res) => {
   try {
     const { id } = req.params;
     const deleteTag = await pool.query(
@@ -141,7 +142,7 @@ app.delete("/relations/:id", async (req, res) => {
   }
 });
 // Add one Tag
-app.post("/tags", async (req, res) => {
+app.post(`${process.env.API_DIR}/tags`, async (req, res) => {
   try {
     const { tag } = req.body;
     const newTag = await pool.query(
@@ -155,7 +156,7 @@ app.post("/tags", async (req, res) => {
 });
 
 // Get all Tags
-app.get("/tags", async (req, res) => {
+app.get(`${process.env.API_DIR}/tags`, async (req, res) => {
   try {
     const allTags = await pool.query("SELECT * FROM tags");
     res.json(allTags.rows);
@@ -165,7 +166,7 @@ app.get("/tags", async (req, res) => {
 });
 
 // Get a Tag
-app.get("/tags/:id", async (req, res) => {
+app.get(`${process.env.API_DIR}/tags/:id`, async (req, res) => {
   try {
     const { id } = req.params;
     const tag = await pool.query("SELECT * FROM tags WHERE tag_id = $1", [id]);
@@ -176,7 +177,7 @@ app.get("/tags/:id", async (req, res) => {
 });
 
 // Update a Tag
-app.put("/tags/:id", async (req, res) => {
+app.put(`${process.env.API_DIR}/tags/:id`, async (req, res) => {
   try {
     const { id } = req.params;
     const { tag } = req.body;
@@ -191,7 +192,7 @@ app.put("/tags/:id", async (req, res) => {
 });
 
 // Remove a Tag
-app.delete("/tags/:id", async (req, res) => {
+app.delete(`${process.env.API_DIR}/tags/:id`, async (req, res) => {
   try {
     const { id } = req.params;
     const deleteTag = await pool.query("DELETE FROM tags WHERE tag_id = $1", [
@@ -201,6 +202,10 @@ app.delete("/tags/:id", async (req, res) => {
   } catch (error) {
     console.error(error.message);
   }
+});
+
+app.get("/", (req, res) => {
+  res.send("<center><span>Relationship Builder API Listening</span></center>");
 });
 
 app.listen(5000, () => {
