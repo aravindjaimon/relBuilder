@@ -4,7 +4,8 @@ import { Button, Col, Form, FormGroup, Input, Label, Row } from "reactstrap";
 const FindRelation = ({ fullData }) => {
   const [fname, setFname] = useState("");
   const [sname, setSname] = useState("");
-  const [output, setOutput] = useState("");
+  const [outputRight, setOutputRight] = useState("");
+  const [outputLeft, setOutputLeft] = useState("");
   const [data, setData] = useState([]);
 
   const getPeople = async () => {
@@ -21,18 +22,37 @@ const FindRelation = ({ fullData }) => {
   });
 
   const processData = (e) => {
+    setOutputLeft("");
+    setOutputRight("");
     e.preventDefault();
     fullData.forEach((element) => {
       if (fname === sname) {
-        setOutput(`${fname} = ${sname}`);
+        setOutputRight(`${fname} = ${sname}`);
       } else if (element.fname === fname) {
         if (element.sname === sname) {
-          setOutput(`${fname} > ${sname}`);
+          setOutputRight(`${fname} > ${sname}`);
         } else {
           fullData.forEach((elementIn) => {
             if (elementIn.fname === element.sname) {
               if (elementIn.sname === sname) {
-                setOutput(`${fname} > ${element.sname} > ${sname}`);
+                setOutputRight(`${fname} > ${element.sname} > ${sname}`);
+              }
+            }
+          });
+        }
+      }
+    });
+    fullData.forEach((element) => {
+      if (sname === fname) {
+        setOutputLeft(`${sname} = ${fname}`);
+      } else if (element.fname === sname) {
+        if (element.sname === fname) {
+          setOutputLeft(`${fname} < ${sname}`);
+        } else {
+          fullData.forEach((elementIn) => {
+            if (elementIn.fname === element.sname) {
+              if (elementIn.sname === fname) {
+                setOutputLeft(`${fname} < ${element.sname} < ${sname}`);
               }
             }
           });
@@ -93,7 +113,7 @@ const FindRelation = ({ fullData }) => {
         </Button>
       </Form>
       <center className="item">
-        <h1>{output}</h1>
+        <h1>{outputLeft.length > 0 ? outputLeft : outputRight}</h1>
       </center>
     </div>
   );
