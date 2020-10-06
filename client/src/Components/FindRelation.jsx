@@ -7,7 +7,7 @@ const FindRelation = ({ fullData }) => {
   const [outputRight, setOutputRight] = useState("");
   const [outputLeft, setOutputLeft] = useState("");
   const [data, setData] = useState([]);
-  const [update, setUpdate] = useState(0)
+  const [update, setUpdate] = useState(0);
 
   const getPeople = async () => {
     try {
@@ -73,7 +73,9 @@ const FindRelation = ({ fullData }) => {
                 type="select"
                 name="fperson"
                 value={fname}
-                onMouseOver={() => { setUpdate(update + 1) }}
+                onMouseOver={() => {
+                  setUpdate(update + 1);
+                }}
                 onChange={(e) => {
                   setFname(e.target.value);
                 }}
@@ -94,7 +96,9 @@ const FindRelation = ({ fullData }) => {
               <Label>Select Second Person</Label>
               <Input
                 value={sname}
-                onMouseOver={() => { setUpdate(update + 1) }}
+                onMouseOver={() => {
+                  setUpdate(update + 1);
+                }}
                 onChange={(e) => {
                   setSname(e.target.value);
                 }}
