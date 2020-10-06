@@ -156,7 +156,11 @@ const Relationship = () => {
                     >
                       <option value="null">Choose One</option>
                       {tag.map((item) => (
-                        <option value={item.tag_id} id={`${item.tag_id}tag`}>
+                        <option
+                          key={item.tag_id}
+                          value={item.tag_id}
+                          id={`${item.tag_id}tag`}
+                        >
                           {item.tag_name}
                         </option>
                       ))}
@@ -173,6 +177,7 @@ const Relationship = () => {
                       <option value="null">Choose One</option>
                       {people.map((item) => (
                         <option
+                          key={item.person_id}
                           value={item.person_id}
                           id={`${item.person_id}people`}
                         >
@@ -200,7 +205,7 @@ const Relationship = () => {
           <tbody>
             {data.map((item) => {
               return (
-                <tr id={item.id}>
+                <tr key={item.id}>
                   <td>{item.id}</td>
                   <td>{item.fname}</td>
                   <td>{item.tag}</td>
